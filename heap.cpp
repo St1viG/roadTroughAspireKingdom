@@ -2,7 +2,7 @@
 // Created by Stevan on 2025-01-10.
 //
 #include "Heap.h"
-
+#include <stack>
 Node *Node::mergeTrees(Node *root1, Node *root2) {
     if (root1->value < root2->value)
         std::swap(root1, root2);
@@ -23,11 +23,6 @@ Heap::Heap(Node *root) {
 
 void Heap::mergeHeap(Heap *heap2) {
     for (auto const& child : heap2->roots) {
-        // for (auto const& child2 : roots) {
-        //     if (child2!=nullptr)
-        //         std::cout << child2->value << ", ";
-        // }
-        std::cout << std::endl;
         if (child == nullptr)
             continue;
         if (child->level >= roots.size()) {
@@ -46,7 +41,7 @@ void Heap::mergeHeap(Heap *heap2) {
                         roots[temp->level] = temp;
                         break;
                     }
-                    if (temp->level == roots.size()) {
+                    if (temp->level >= roots.size()) {
                         roots.push_back(temp);
                         break;
                     }
@@ -63,14 +58,29 @@ void Heap::printHeap() {
     }
 }
 
-void Node::printTree(Node* root) {
-    if (!root) return;
+//void Node::printTree(Node* root) {
+//    if (root == nullptr) return;
+//    std::cout << root->value << " ";
+//    for (auto & i : root->children) {
+//        printTree(i);
+//    }
+//}
 
-    // Print the value of the current node
-    std::cout << root->value << " ";
-
-    // Recursively print all the children of this node
-    for (int i = 0; i < root->children.size(); i++) {
-        printTree(root->children[i]);
+void Node::printTree(Node* root)
+{
+    std::stack<std::pair<Node*,int>> stek;
+    if(root!= nullptr)
+        stek.push({root,0});
+    while (!stek.empty()) {
+        Node* x=stek.top().first;
+        int tab = stek.top().second;
+        stek.pop();
+        for(int i=0;i<tab;i++)
+            std::cout<<"\t";
+        std::cout<<x->value<<std::endl;
+        for (int i = x->children.size()-1; i >= 0; i--) {
+            if (x->children[i] != nullptr)
+                stek.push({x->children[i],tab + 1});
+        }
     }
 }
