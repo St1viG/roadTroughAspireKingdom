@@ -14,6 +14,8 @@ void Heap::insert(int value) {
     Node *newNode = new Node(value);
     Heap *newHeap = new Heap(newNode);
     this->mergeHeap(newHeap);
+    delete newHeap;
+    numberOfNodes += 1;
 }
 
 Heap::Heap(Node *root) {
@@ -58,14 +60,6 @@ void Heap::printHeap() {
     }
 }
 
-//void Node::printTree(Node* root) {
-//    if (root == nullptr) return;
-//    std::cout << root->value << " ";
-//    for (auto & i : root->children) {
-//        printTree(i);
-//    }
-//}
-
 void Node::printTree(Node* root)
 {
     std::stack<std::pair<Node*,int>> stek;
@@ -75,7 +69,7 @@ void Node::printTree(Node* root)
         Node* x=stek.top().first;
         int tab = stek.top().second;
         stek.pop();
-        for(int i=0;i<tab;i++)
+        for(int i=0;i<2*tab;i++)
             std::cout<<"\t";
         std::cout<<x->value<<std::endl;
         for (int i = x->children.size()-1; i >= 0; i--) {

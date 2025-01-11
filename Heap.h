@@ -42,17 +42,17 @@ public:
 
     void mergeHeap(Heap* heap2);
 
-    Heap(){};
+    Heap() {
+        this->roots.push_back(nullptr);
+    };
 
     Heap(Node* root);
 
     void printHeap();
 
 private:
+    int numberOfNodes = 0;
     std::vector<Node*> roots;
-
-
-
 
 };
 #endif //HEAP_H
