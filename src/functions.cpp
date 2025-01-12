@@ -125,7 +125,7 @@ void processCmd( Heap* &blue, Heap* &red,std::string line) {
 }
 void file(Heap* &blue, Heap* &red) {
     std::string fileName, move;
-    std::cout<<"Enter name of file"<<std::endl;
+    std::cout<<"Enter name of file:";
     std::cin>>fileName;
     std::ifstream stream(fileName);
     while (getline(stream,move)) {

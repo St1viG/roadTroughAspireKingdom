@@ -45,12 +45,12 @@ void Heap::mergeHeap(Heap *heap2) {
                 while (true) {
                     temp = Node::mergeTrees(temp, roots[temp->level]);
                     roots[temp->level - 1] = nullptr;
-                    if (roots[temp->level] == nullptr) {
-                        roots[temp->level] = temp;
-                        break;
-                    }
                     if (temp->level >= roots.size()) {
                         roots.push_back(temp);
+                        break;
+                    }
+                    if (roots[temp->level] == nullptr) {
+                        roots[temp->level] = temp;
                         break;
                     }
                 }
