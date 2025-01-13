@@ -6,7 +6,6 @@
 
 #include <iostream>
 #include <vector>
-#include <stack>
 
 #include "Node.h"
 
@@ -25,11 +24,6 @@ public:
             roots.push_back(root);
     };
 
-    ~Heap() {
-        this->roots.clear();
-        this->extreme = nullptr;
-    }
-
     void insert(int value);
 
     void insertNode(Node* node);
@@ -41,6 +35,8 @@ public:
     void mergeHeap(Heap* heap2);
 
     void printHeap();
+
+    void freeRoots();
 std::vector<Node*> roots;
 private:
     bool isMax = true;

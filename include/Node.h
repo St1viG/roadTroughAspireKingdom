@@ -21,6 +21,8 @@ public:
 
     void switchTree(bool isMax);
 
+    void freeTree();
+
 
     std::vector<Node*> children;
     Node* parent = nullptr;

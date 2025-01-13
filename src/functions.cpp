@@ -48,6 +48,8 @@ void processCmd( Heap* &blue, Heap* &red,std::string line) {
                 break;
             //B - Gift blue and red bag to the poor
             case 1:
+                blue->freeRoots();
+                red->freeRoots();
                 delete blue;
                 delete red;
                 blue = nullptr;

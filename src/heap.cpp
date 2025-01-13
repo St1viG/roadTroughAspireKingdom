@@ -29,7 +29,7 @@ void Heap::mergeHeap(Heap *heap2) {
         if (child == nullptr)
             continue;
         else{
-            if (!(this->isMax == heap2 -> isMax))
+            if (this->isMax != heap2 -> isMax)
                 child->switchTree(heap2->isMax);
         }
         if (child->level >= roots.size()) {
@@ -64,10 +64,17 @@ void Heap::printHeap() {
         Node::printTree(x);
     }
 }
+//Deallocates memory that was used by nodes
+void Heap::freeRoots() {
+    for (Node* x: roots) {
+         if (x != nullptr)
+             x->freeTree();
+    }
+}
 
 //Removes the top (biggest or smallest number in heap)
 void Heap::remove() {
-    if (roots.empty()||roots.back()==nullptr) {
+    if (roots.empty()) {
         std::cout<<"Empty bag!"<<std::endl;
         return;
     }
@@ -96,9 +103,7 @@ void Heap::remove() {
             newHeap->insertNode(x);
         }
     }
-    // roots.erase(roots.begin()+pos);`
-    // std::cout<<"Ispisujem novi heap"<<std::endl;
-    // newHeap->printHeap();
+    delete roots[pos];
     roots[pos] = nullptr;
     this->Heap::mergeHeap(newHeap);
 }

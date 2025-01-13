@@ -88,3 +88,16 @@ void Node::switchTree(bool isMax) {
         }
     }
 }
+
+void Node::freeTree() {
+    std::stack<Node*> stek;
+    stek.push(this);
+    while (!stek.empty()) {
+        Node* temp = stek.top();
+        stek.pop();
+        for (auto x: temp->children) {
+            stek.push(x);
+        }
+        delete temp;
+    }
+}
