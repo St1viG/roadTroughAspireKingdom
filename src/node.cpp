@@ -3,9 +3,9 @@
 //
 #include "../include/Node.h"
 
-//Merges 2 trees to keep Binome tree property
-Node *Node::mergeTrees(Node *root1, Node *root2) {
-    if (root1->value < root2->value)
+//Merges 2 trees to keep Binomial tree property
+Node *Node::mergeTrees(Node *root1, Node *root2, bool isMax) {
+    if ((isMax && root1->value < root2->value) || (!isMax && root1->value > root2->value))
         std::swap(root1, root2);
     root1->children.push_back(root2);
     root1->level++;
@@ -27,6 +27,64 @@ void Node::printTree(Node* root)
         for (int i = x->children.size()-1; i >= 0; i--) {
             if (x->children[i] != nullptr)
                 stek.push({x->children[i],tab + 1});
+        }
+    }
+}
+
+//Function that switches the three in binomial heap from max -> min and other way around and fixes tree to keep binomal tree property
+void Node::switchTree(bool isMax) {
+    if (this->children.empty())
+        return;
+    std::stack<Node*> stek;
+    stek.push(this);
+    if (isMax) {
+        while (!stek.empty()) {
+            Node* temp = stek.top();
+            stek.pop();
+            Node* temp2 = nullptr;
+            int extreme = INT_MAX;
+            for (auto x: temp->children) {
+                x->parent = temp;
+                if (x->value < extreme) {
+                    extreme = x->value;
+                    temp2 = x;
+                }
+                stek.push(x);
+            }
+            if (temp2) {
+                while (temp2->value < temp->value) {
+                    std::swap(temp2->value, temp->value);
+                    temp2 = temp;
+                    temp = temp->parent;
+                    if (temp == nullptr)
+                        break;
+                }
+            }
+        }
+    }
+    else {
+        while (!stek.empty()) {
+            Node* temp = stek.top(), *swap;
+            stek.pop();
+            Node* temp2 = nullptr;
+            int extreme = INT_MIN;
+            for (auto x: temp->children) {
+                x->parent = temp;
+                if (x->value > extreme) {
+                    extreme = x->value;
+                    temp2 = x;
+                }
+                stek.push(x);
+            }
+            if (temp2) {
+                while (temp2->value > temp->value) {
+                    std::swap(temp2->value, temp->value);
+                    temp2 = temp;
+                    temp = temp->parent;
+                    if (temp == nullptr)
+                        break;
+                }
+            }
         }
     }
 }

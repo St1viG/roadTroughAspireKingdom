@@ -44,7 +44,7 @@ void processCmd( Heap* &blue, Heap* &red,std::string line) {
                     break;
                 }
                 blue = new Heap();
-                red = new Heap();
+                red = new Heap(false);
                 break;
             //B - Gift blue and red bag to the poor
             case 1:

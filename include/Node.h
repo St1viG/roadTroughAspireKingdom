@@ -11,18 +11,21 @@
 class Node {
 public:
 
-    static Node* mergeTrees(Node* root1, Node* root2);
+    static Node* mergeTrees(Node* root1, Node* root2, bool isMax = true);
     Node();
 
     Node(const int value) {
-        level = 0;
-        children.clear();
         this->value = value;
     }
     static void printTree(Node* root);
+
+    void switchTree(bool isMax);
+
+
     std::vector<Node*> children;
+    Node* parent = nullptr;
     int value;
-    int level;
+    int level = 0;
 };
 
 #endif //NODE_H
