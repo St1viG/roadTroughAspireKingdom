@@ -130,7 +130,13 @@ void file(Heap* &blue, Heap* &red) {
     std::cout<<"Enter name of file:";
     std::cin>>fileName;
     std::ifstream stream(fileName);
+    if (!stream.good()) {
+        std::cout<<"File not found"<<std::endl;
+    }
+
     while (getline(stream,move)) {
+        if (move.empty())
+            continue;
         processCmd(blue,red, move);
     }
 }
