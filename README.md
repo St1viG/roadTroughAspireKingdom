@@ -1,0 +1,14 @@
+Description:
+
+The adventure computer game "A Journey Through the Kingdom of Aspire". This is a single-player game. The player plays the role of a warrior who explores the kingdom of Aspire, interacts with the environment, and fights enemies in order to preserve the kingdom. A small part of this game needs to be implemented that uses the heap data structure to implement the player's inventory. The player has a blue and a red bag in his inventory. Wandering through the abandoned villages of the kingdom, he finds gems, diamonds that are very valuable, and moissanites that resemble diamonds but are much less valuable. Each gem in the game has a positive integer value that determines its value. The player places diamonds in the blue bag, and moissanites in the red bag. On his way, the player sometimes encounters traveling merchants and bakers. Since he needs food to maintain his energy and weapons to fight enemies, each time he encounters a merchant or baker, he exchanges his gems for the appropriate goods. Traveling bakers do not distinguish between gems well, so the player, in order to save them, gives the moissanite with the lowest value each time he trades with the baker. However, traveling merchants are much more experienced and only ask for the most valuable diamonds in exchange for weapons, so the player gives the diamond with the highest value each time he trades with the merchant. In order for the player to be able to access the most valuable diamond and the least valuable moissanite efficiently at all times, the bags he has are organized in the form of heaps (a bag with diamonds in the form of a maximum heap, and a bag with moissanites in the form of a minimum heap). Only the values ​​of the gems need to be stored in the heaps.
+During his journey, the player passes through border crossings between areas of the kingdom where soldiers ask him to show what is in his bags for control. Occasionally, the player also encounters a thief, who decides to transfer all the gems into one bag, the one that initially had more gems (in case both bags have the same number of gems, he transfers everything into the blue bag), in order to show the thief an empty bag and avoid theft.
+It is also necessary to support game simulation, which involves loading a series of commands, or events, from a text file and executing them successively. In a text file, a command is specified on one line by a single-word label and any additional data in square brackets. The command description is as follows:
+- V – Purchase of a blue and red bag.
+- B – Donation of a blue and red bag.\n
+- D[x] – Finding a diamond worth x.
+- M[x] – Finding a moissanite worth x.
+- T – Encountering a traveling arms dealer.
+- P – Encountering a traveling baker.
+- G – Encountering a border crossing.
+- L – Encountering a thief.
+- R[k] – Encountering a rare merchant who requires k gems.
