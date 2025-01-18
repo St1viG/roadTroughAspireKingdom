@@ -46,7 +46,7 @@ void processCmd( Heap* &blue, Heap* &red,std::string line) {
                 blue = new Heap();
                 red = new Heap(false);
                 break;
-            //B - Gift blue and red bag to the poor
+                //B - Gift blue and red bag to the poor
             case 1:
                 blue->freeRoots();
                 red->freeRoots();
@@ -55,15 +55,15 @@ void processCmd( Heap* &blue, Heap* &red,std::string line) {
                 blue = nullptr;
                 red = nullptr;
                 break;
-            //T - Encounter traveling merchant
+                //T - Encounter traveling merchant
             case 19:
                 blue->remove();
                 break;
-            //P - Encounter traveling baker
+                //P - Encounter traveling baker
             case 15:
                 red->remove();
                 break;
-            //G - Approach border cross
+                //G - Approach border cross
             case 6:
                 if (!blue) {
                     std::cout <<"____________________"<< std::endl<<"There are no bags to be shown"<<std::endl;
@@ -74,7 +74,7 @@ void processCmd( Heap* &blue, Heap* &red,std::string line) {
                 std::cout <<"_ _ _ _ _ _ _ _ _ _ _"<< std::endl<<"Red bag:"<<std::endl;
                 red->printHeap();
                 break;
-            //L - Thief attack
+                //L - Thief attack
             case 11:
                 if (blue->numberOfNodes >= red->numberOfNodes) {
                     blue->mergeHeap(red);
@@ -84,11 +84,11 @@ void processCmd( Heap* &blue, Heap* &red,std::string line) {
                     blue = new Heap();
                 }
                 break;
-            //Q - Print menu
+                //Q - Print menu
             case 16:
                 printMenu();
                 break;
-            //X - End game
+                //X - End game
             case 23:
                 return;
             default:
@@ -97,29 +97,34 @@ void processCmd( Heap* &blue, Heap* &red,std::string line) {
     }
     else {
         int pos = line.find(']');
-        int number = stoi(line.substr(2,pos - 2));
-        switch (p) {
-            //D - Find diamond of value x
-            case 3:
-                blue->insert(number);
-                break;
-            //M - Find moissanite of value x
-            case 12:
-                red->insert(number);
-                break;
-            //R - Encounter a rare traveling merchant
-            case 17:
-                if (number/2 > red->numberOfNodes || number/2 > blue->numberOfNodes)
-                    std::cout<<"Not enough jewels in one of the bags"<<std::endl;
-                else {
-                    for (int i=0; i < number/2; i++)
-                        blue->remove();
-                    for (int i=0; i < number/2; i++)
-                        red->remove();
-                }
-                break;
-            default:
-                std::cout <<"____________________"<< std::endl<<"Unknown move"<<std::endl;
+        if(line[pos-1]=='[' || line[1]!='['){
+            std::cout<<"Invalid syntax"<<std::endl;
+        }
+        else{
+            int number = stoi(line.substr(2,pos - 2));
+            switch (p) {
+                //D - Find diamond of value x
+                case 3:
+                    blue->insert(number);
+                    break;
+                    //M - Find moissanite of value x
+                case 12:
+                    red->insert(number);
+                    break;
+                    //R - Encounter a rare traveling merchant
+                case 17:
+                    if (number/2 > red->numberOfNodes || number/2 > blue->numberOfNodes)
+                        std::cout<<"Not enough jewels in one of the bags"<<std::endl;
+                    else {
+                        for (int i=0; i < number/2; i++)
+                            blue->remove();
+                        for (int i=0; i < number/2; i++)
+                            red->remove();
+                    }
+                    break;
+                default:
+                    std::cout <<"____________________"<< std::endl<<"Unknown move"<<std::endl;
+            }
         }
     }
     if (!wasFile)
