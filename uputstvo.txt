@@ -1,0 +1,273 @@
+
+**functions.h
+    #ifndef FUNCTIONS_H
+    #define FUNCTIONS_H
+
+    #include <fstream>
+
+    #include "Heap.h"
+
+    void printMenu();
+
+    int checkInput(Heap* &blue, Heap* &red, std::string move);
+
+    void processCmd( Heap* &blue, Heap* &red,std::string line = "");
+
+    void file(Heap* &blue, Heap* &red);
+
+    int inputSel();
+
+    #endif //FUNCTIONS_H
+
+1. printMenu() funkcija ispisuje meni pomocu kojeg se korisnik krece
+2. printInput() proverava validnost unosa, i ispisuje gresku ukoliko nevalidnost postoji
+3. processCmd() izvrsava komandu. Nakon provere duzine unosa (1 ili vise karaktera) program ulazi u switch statement, gde na osnovu prvog karaktera izvrsava odredjenu funkciju.
+Ako je unos prazan, funkcija se rekurzivno poziva sve dok ulaz ne promeni vrednost. U slucaju nevalidnog unosa, ispisuje se greska, i program se nastavlja. Ako je unos validan,
+na osnovu prvog karaktera se ulazi u 1 od dva switch statementa. Prvi je za unose duzine 1, dok je drugi za unos koji sadrzi vise karaktera, gde je potrebno ekstraktovati broj iz unosa,
+zarad izvrsavanja same funkcije. Svaka nevalidna komanda zavrsava sa default izlazom "unknown move". Unutar switch statementa se pozivaju funkcije iz klase Heap, koje manipulisu samim hipovima.
+Na samom kraju, ako je unos bio sa komandne linije, funkcija rekurzivno poziva samu sebe.
+4. file() funkcija prihvata kao unos naziv fajla koji sadrzi komande za igru. Proverava da li taj fajl postoji, ako ne -> ispisuje gresku. Ako postoji, izvlaci liniju po liniju iz fajla i prosledjuje
+je processCmd() funkciji koja izvrsava komandu.
+5. inputSel() se ispisuje na pocetku igre, i obavestava korisnika da u svakom trenutku za vreme igre moze da ispise meni, i pita korisnika koji tip unosa zeli (komandnu liniju / fajl)
+
+
+**Heap.h
+    #ifndef HEAP_H
+    #define HEAP_H
+
+    #include <iostream>
+    #include <vector>
+
+    #include "Node.h"
+
+    class Heap {
+    public:
+        int numberOfNodes = 0;
+
+        Heap(bool isMax = true) {
+            this->isMax = isMax;
+            this->roots.push_back(nullptr);
+        }
+
+        Heap(Node* root, bool isMax = true) {
+            this->isMax = isMax;
+            if (root!=nullptr)
+                roots.push_back(root);
+        };
+
+        void insert(int value);
+
+        void insertNode(Node* node);
+
+        void clear();
+
+        void remove();
+
+        void mergeHeap(Heap* heap2);
+
+        void printHeap();
+
+        void freeRoots();
+    std::vector<Node*> roots;
+    private:
+        bool isMax = true;
+        Node* extreme = nullptr;
+
+    };
+    #endif //HEAP_H
+
+1. insert() ubacuje vrednost u vec postojeci heap, tako sto prvo kreira Node koji sadrzi vrednost, zatim heap sa kreiranim Node-om, i potom spaja vec postojeci heap sa novonastalim.
+2. insertNode() funkcionise na isti princip kao insert(), samo je argument vec postojeci Node umesto vrednosti.
+3. clear() prazni korenje heapova.
+4. mergeHeaps() prvo proverava da li je svako stablo ciji je koren deo korenja heapa, istog tipa kao heap objekta koji poziva ovu funkciju. Ako nije, obrce se stablo (min->max i obrnuto). Potom se proverava, ako je
+nivo trenutnog sina drugog heapa >= rangu najveceg sina objekta, onda se root niz kod objekta povecava i umece se vrednost. Ako je pokazivac za rang trenutnog sina = nullptr onda opet samo umecemo. U slucaju da oba
+stabla imaju sinove sa istim rangom, onda spajamo stabla sa prenosom pomocu mergeTrees() funkcije. Na kraju brisemo drugi heap jer je prazan.
+5. freeRoots() cisti sve sinove ciji su koreni unutar roots niza.
+6. remove() izbacuje jedno ekstrem unutar heapa (min/max u zavisnosti od tipa heap-a)
+
+** Node.h
+    #ifndef NODE_H
+    #define NODE_H
+
+    #include <vector>
+    #include <stack>
+    #include <iostream>
+
+    class Node {
+    public:
+
+        static Node* mergeTrees(Node* root1, Node* root2, bool isMax = true);
+        Node();
+
+        Node(const int value) {
+            this->value = value;
+        }
+        static void printTree(Node* root);
+
+        void switchTree(bool isMax);
+
+        void freeTree();
+
+
+        std::vector<Node*> children;
+        Node* parent = nullptr;
+        int value;
+        int level = 0;
+    };
+
+    #endif //NODE_H
+
+1. mergeTrees() spaja dva stabla istog ranga, i vraca rezultujuce stablo.
+2. printTree() ispisuje stablo
+3. switchTree() obrce tip stabla (min -> max) i brine se da se odrzi binomna osobina stabla.
+4. freeTree() prazni i oslobadja memoriju obrisanog stabla.
+
+** main.cpp
+    #include "../include/Heap.h"
+    #include "../include/functions.h"
+
+    int main() {
+        Heap* blue = nullptr, *red = nullptr;
+        if (inputSel()) {
+            file(blue,red);
+        }else {
+            processCmd(blue,red);
+        }
+        return 0;
+    }
+
+1. main poziva, u zavisnosti od unosa korisnika u inputSel() funkciji, funkciju file() koja cita iz fajla red po red i izvrsava komande, ili ceka i izvrsava komande sa standardnog ulaza.
+
+PRIMERI
+-------------------------------------------------------
+1.Commands10.txt
+input:
+    V
+    D[40]
+    M[10]
+    M[7]
+    D[75]
+    G
+    T
+    P
+    G
+    B
+output:
+    DURING THE GAME PRESS Q FOR MENU
+    _____________________
+    Select input:
+    1. Console input
+    2. File input
+    2
+    Enter name of file:Commands10.txt
+    ____________________
+    Blue bag:
+    75
+                    40
+    _ _ _ _ _ _ _ _ _ _ _
+    Red bag:
+    7
+                    10
+    ____________________
+    Blue bag:
+    40
+    _ _ _ _ _ _ _ _ _ _ _
+    Red bag:
+    10
+2.Commands20.txt
+input:
+    V
+    D[50]
+    D[25]
+    D[75]
+    D[40]
+    M[10]
+    M[8]
+    M[15]
+    M[2]
+    G
+    T
+    P
+    M[1]
+    D[100]
+    R[2]
+    T
+    T
+    P
+    G
+    B
+output:
+    DURING THE GAME PRESS Q FOR MENU
+    _____________________
+    Select input:
+    1. Console input
+    2. File input
+    2
+    Enter name of file:Commands20.txt
+    ____________________
+    Blue bag:
+    75
+                    40
+                    50
+                                    25
+    _ _ _ _ _ _ _ _ _ _ _
+    Red bag:
+    2
+                    15
+                    8
+                                    10
+    ____________________
+    Blue bag:
+    25
+    _ _ _ _ _ _ _ _ _ _ _
+    Red bag:
+    10
+                    15
+
+3.Moj test primer
+input:
+    B
+    V
+    D[3]
+    M[2]
+    D[4]
+    G
+    T
+
+    G
+    R[2]
+    G
+    B
+    B
+    X
+output:
+    DURING THE GAME PRESS Q FOR MENU
+    _____________________
+    Select input:
+    1. Console input
+    2. File input
+    2
+    Enter name of file:test1.txt
+    _____________________
+    There are no bags to be used
+    ____________________
+    Blue bag:
+    4
+                    3
+    _ _ _ _ _ _ _ _ _ _ _
+    Red bag:
+    2
+    ____________________
+    Blue bag:
+    3
+    _ _ _ _ _ _ _ _ _ _ _
+    Red bag:
+    2
+    ____________________
+    Blue bag:
+    _ _ _ _ _ _ _ _ _ _ _
+    Red bag:
+    _____________________
+    There are no bags to be used
+
+Notes: unutar mog testa testirano je i kako ce program reagovati ako je jedna od linija prazna, + ispisivanje errora u slucaju da se manipulise sa heap-ovima a da oni prvobitno nisu kreirani.
