@@ -22,10 +22,9 @@
 1. printMenu() funkcija ispisuje meni pomocu kojeg se korisnik krece
 2. printInput() proverava validnost unosa, i ispisuje gresku ukoliko nevalidnost postoji
 3. processCmd() izvrsava komandu. Nakon provere duzine unosa (1 ili vise karaktera) program ulazi u switch statement, gde na osnovu prvog karaktera izvrsava odredjenu funkciju.
-Ako je unos prazan, funkcija se rekurzivno poziva sve dok ulaz ne promeni vrednost. U slucaju nevalidnog unosa, ispisuje se greska, i program se nastavlja. Ako je unos validan,
+Ako je unos prazan, funkcija se ponovo poziva sve dok ulaz ne promeni vrednost. U slucaju nevalidnog unosa, ispisuje se greska, i program se nastavlja. Ako je unos validan,
 na osnovu prvog karaktera se ulazi u 1 od dva switch statementa. Prvi je za unose duzine 1, dok je drugi za unos koji sadrzi vise karaktera, gde je potrebno ekstraktovati broj iz unosa,
 zarad izvrsavanja same funkcije. Svaka nevalidna komanda zavrsava sa default izlazom "unknown move". Unutar switch statementa se pozivaju funkcije iz klase Heap, koje manipulisu samim hipovima.
-Na samom kraju, ako je unos bio sa komandne linije, funkcija rekurzivno poziva samu sebe.
 4. file() funkcija prihvata kao unos naziv fajla koji sadrzi komande za igru. Proverava da li taj fajl postoji, ako ne -> ispisuje gresku. Ako postoji, izvlaci liniju po liniju iz fajla i prosledjuje
 je processCmd() funkciji koja izvrsava komandu.
 5. inputSel() se ispisuje na pocetku igre, i obavestava korisnika da u svakom trenutku za vreme igre moze da ispise meni, i pita korisnika koji tip unosa zeli (komandnu liniju / fajl)
@@ -118,6 +117,7 @@ stabla imaju sinove sa istim rangom, onda spajamo stabla sa prenosom pomocu merg
     #endif //NODE_H
 
 1. mergeTrees() spaja dva stabla istog ranga, i vraca rezultujuce stablo.
+Prvobitno swapuje stabla kako bi stablo 1 uvek imalo maksimalni element, i zatim samo doda stablo broj 2 kao sina sa najvecim rangom.
 2. printTree() ispisuje stablo
 3. switchTree() obrce tip stabla (min -> max) i brine se da se odrzi binomna osobina stabla.
 4. freeTree() prazni i oslobadja memoriju obrisanog stabla.
