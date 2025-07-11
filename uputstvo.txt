@@ -22,7 +22,7 @@
 1. printMenu() funkcija ispisuje meni pomocu kojeg se korisnik krece
 2. printInput() proverava validnost unosa, i ispisuje gresku ukoliko nevalidnost postoji
 3. processCmd() izvrsava komandu. Nakon provere duzine unosa (1 ili vise karaktera) program ulazi u switch statement, gde na osnovu prvog karaktera izvrsava odredjenu funkciju.
-Ako je unos prazan, funkcija se ponovo poziva sve dok ulaz ne promeni vrednost. U slucaju nevalidnog unosa, ispisuje se greska, i program se nastavlja. Ako je unos validan,
+U slucaju nevalidnog unosa, ispisuje se greska, i program se nastavlja. Ako je unos validan,
 na osnovu prvog karaktera se ulazi u 1 od dva switch statementa. Prvi je za unose duzine 1, dok je drugi za unos koji sadrzi vise karaktera, gde je potrebno ekstraktovati broj iz unosa,
 zarad izvrsavanja same funkcije. Svaka nevalidna komanda zavrsava sa default izlazom "unknown move". Unutar switch statementa se pozivaju funkcije iz klase Heap, koje manipulisu samim hipovima.
 4. file() funkcija prihvata kao unos naziv fajla koji sadrzi komande za igru. Proverava da li taj fajl postoji, ako ne -> ispisuje gresku. Ako postoji, izvlaci liniju po liniju iz fajla i prosledjuje
